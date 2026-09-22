@@ -5,6 +5,10 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
+# shellcheck source=scripts/jdk.sh
+. scripts/jdk.sh
+use_jdk
+
 if [ $# -lt 1 ]; then
   echo "usage: ./run.sh <ExampleName> [options]" >&2
   echo "examples: Ex01Hello, Ex02SmartBuilding, Ex03Wearable" >&2

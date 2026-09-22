@@ -15,13 +15,28 @@ This affects that one process and changes nothing on the machine.
 
 The PowerShell window was open before the install, so its PATH is stale.
 `build.ps1` and `run.ps1` call `Use-Jdk` from `scripts\jdk.ps1`, which searches
-Program Files for `javac.exe` and fixes the session PATH itself. If you are
-calling `javac` by hand, open a new window.
+`jdk\`, PATH, `JAVA_HOME` and Program Files for `javac.exe` and fixes the
+session PATH itself. If you are calling `javac` by hand, open a new window.
 
-## "No JDK found" although Java is installed
+## "No JDK found. Run .\setup.ps1"
 
-You have a JRE, not a JDK. `java -version` works and `javac -version` does not.
-Install a JDK: `winget install --id Microsoft.OpenJDK.21`.
+`build.ps1` and `run.ps1` never download anything; only setup does. Run
+`powershell -ExecutionPolicy Bypass -File .\setup.ps1` and it will fetch a
+portable JDK into `jdk\`.
+
+## Java is installed but setup downloads its own JDK anyway
+
+You have a JRE, not a JDK: `java -version` works and `javac -version` does not.
+iFogSim ships as source, so a compiler is required. Let it download, or install
+a JDK yourself with `winget install --id Microsoft.OpenJDK.21` and delete
+`jdk\`.
+
+## The JDK download fails or is too slow
+
+It is one HTTPS GET of about 200 MB from api.adoptium.net. On a filtered
+network, fetch the Temurin 21 ZIP by hand and unpack it under the FogUp folder
+so that `jdk\<anything>\bin\javac.exe` exists, then re-run setup. The search is
+recursive, so the folder name does not matter.
 
 ## Compile ends with "error: unreported exception Exception"
 

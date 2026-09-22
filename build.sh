@@ -4,6 +4,10 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
+# shellcheck source=scripts/jdk.sh
+. scripts/jdk.sh
+use_jdk
+
 if [ ! -d ifogsim/src ]; then
   echo "ifogsim/ is missing. Run ./setup.sh first." >&2
   exit 1

@@ -6,3 +6,5 @@ results/*.csv
 *.class
 .idea/
 .vscode/
+jdk/
+.fogup-jdk.*

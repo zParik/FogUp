@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-shot setup for Linux and macOS: check the JDK, fetch iFogSim, compile,
+# One-shot setup for Linux and macOS: get a JDK, fetch iFogSim, compile,
 # run the smallest example. Safe to re-run.
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -7,16 +7,11 @@ cd "$(dirname "$0")"
 IFOGSIM_ZIP="https://codeload.github.com/Cloudslab/iFogSim/zip/refs/heads/main"
 
 echo "[1/4] checking for a JDK"
-if ! command -v javac > /dev/null; then
-  cat >&2 <<'MSG'
-javac was not found. Install a JDK (17 or 21 are both fine), then re-run:
-  Debian/Ubuntu   sudo apt install openjdk-21-jdk
-  Fedora          sudo dnf install java-21-openjdk-devel
-  Arch            sudo pacman -S jdk-openjdk
-  macOS           brew install openjdk@21
-MSG
-  exit 1
-fi
+# --install means: if this machine has no JDK, unpack a portable one into jdk/.
+# Nothing is installed system-wide and no root is needed.
+. scripts/jdk.sh
+use_jdk --install
+echo "      using $JAVA_HOME"
 javac -version
 
 echo "[2/4] fetching iFogSim"

@@ -23,10 +23,12 @@ Linux or macOS:
 ./setup.sh
 ```
 
-The script installs Microsoft OpenJDK 21 through winget if `javac` is missing,
-downloads iFogSim into `ifogsim\`, compiles 450 source files into
-`build\classes`, and finishes by running `Ex01Hello`. Re-running it is safe;
-it skips whatever is already in place.
+If `javac` is missing the script downloads a portable Temurin 21 JDK, about
+200 MB, and unpacks it into `jdk\`. Nothing is installed system-wide, no
+administrator rights are needed, and deleting the `jdk\` folder undoes it. An
+existing JDK is used as it is. The script then downloads iFogSim into
+`ifogsim\`, compiles 450 source files into `build\classes`, and runs
+`Ex01Hello`. Re-running it is safe; it skips whatever is already in place.
 
 Full walkthrough with screenshots of what each step prints:
 [docs/01-install-windows.md](docs/01-install-windows.md).
@@ -86,7 +88,8 @@ sensors and identical alert latency.
 ## What is in here
 
 ```
-setup.ps1 / setup.sh        install JDK, fetch iFogSim, compile, smoke test
+setup.ps1 / setup.sh        get a JDK, fetch iFogSim, compile, smoke test
+scripts\jdk.ps1 / jdk.sh    find a JDK, or download a portable one into jdk\
 build.ps1 / build.sh        recompile after editing anything in src\fogup
 run.ps1   / run.sh          run one example class with flags
 experiment.ps1 / .sh        sweep Ex02 over both placements and three sizes
@@ -96,7 +99,7 @@ src\fogup\Ex0*.java         the three simulations
 docs\                       install guide, session plan, concepts, cheat sheet
 ```
 
-`ifogsim\` and `build\` are downloaded and generated, and are not in git.
+`ifogsim\`, `jdk\` and `build\` are downloaded or generated, and are not in git.
 
 ## Docs
 

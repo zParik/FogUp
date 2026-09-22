@@ -1,4 +1,4 @@
-# One-shot setup for Windows: install a JDK if needed, download iFogSim,
+# One-shot setup for Windows: get a JDK if needed, download iFogSim,
 # compile everything, run the smallest example. Safe to re-run.
 #
 # Start it from PowerShell in this folder:
@@ -11,27 +11,9 @@ Set-Location $PSScriptRoot
 $zipUrl = "https://codeload.github.com/Cloudslab/iFogSim/zip/refs/heads/main"
 
 Write-Host "[1/4] checking for a JDK"
-$bin = Find-JavacPath
-if (-not $bin) {
-    Write-Host "      no JDK found, installing Microsoft OpenJDK 21 with winget"
-    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-        Write-Host ""
-        Write-Host "winget is not available on this machine."
-        Write-Host "Install a JDK by hand, then re-run this script:"
-        Write-Host "  https://adoptium.net/temurin/releases/?version=21&package=jdk&os=windows"
-        exit 1
-    }
-    winget install --id Microsoft.OpenJDK.21 --silent --accept-package-agreements --accept-source-agreements
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "      Microsoft OpenJDK failed, trying Eclipse Temurin"
-        winget install --id EclipseAdoptium.Temurin.21.JDK --silent --accept-package-agreements --accept-source-agreements
-    }
-    $bin = Find-JavacPath
-    if (-not $bin) {
-        Write-Error "The install finished but javac is still not on disk where expected. Open a new PowerShell window and re-run .\setup.ps1."
-    }
-}
-Use-Jdk
+# -Install means: if no JDK is on this machine, fetch a portable one into jdk\.
+# Nothing is installed system-wide and no administrator rights are needed.
+Use-Jdk -Install
 Write-Host "      using $env:JAVA_HOME"
 javac -version
 
