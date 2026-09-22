@@ -1,0 +1,8 @@
+# Upstream iFogSim is fetched by setup, never committed.
+ifogsim/
+build/
+results/*.csv
+.fogup-tmp.zip
+*.class
+.idea/
+.vscode/
